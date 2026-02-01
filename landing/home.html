@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VinRaven - AI Customer Support That Never Sleeps</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            /* Backgrounds - matching admin dashboard */
+            --bg-primary: #1a1a1a;
+            --bg-surface: #222222;
+            --bg-surface-2: #2a2a2a;
+            
+            /* Accents - purple from admin dashboard */
+            --accent-primary: #8b5cf6;
+            --accent-primary-hover: #9d6ff7;
+            --accent-primary-glow: rgba(139, 92, 246, 0.4);
+            
+            /* Text */
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-muted: rgba(255, 255, 255, 0.65);
+            
+            /* Borders */
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            
+            /* Colorful backgrounds */
+            --color-bg-1: rgba(139, 92, 246, 0.1);
+            --color-bg-2: rgba(168, 85, 247, 0.1);
+            --color-bg-3: rgba(124, 58, 237, 0.1);
+            
+            /* Spacing */
+            --space-section: 80px;
+            --space-element: 40px;
+            
+            /* Animation */
+            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 15, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 20px 0;
+        }
+        
+        .header-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-crimson);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .cta-header {
+            background: var(--accent-primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 250ms var(--ease-standard);
+        }
+        
+        .cta-header:hover {
+            background: var(--accent-primary-hover);
+            box-shadow: 0 0 20px var(--accent-primary-glow);
+            transform: translateY(-1px);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: var(--space-section) 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--accent-primary-glow) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0.4;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero h1 .highlight {
+            color: var(--accent-primary);
+        }
+        
+        .hero p {
+            font-size: clamp(18px, 2vw, 22px);
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+        
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary, .btn-secondary {
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 250ms var(--ease-standard);
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-primary-hover);
+            box-shadow: 0 0 30px var(--accent-primary-glow);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-hover);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--border-hover);
+        }
+        
+        .scroll-hint {
+            margin-top: 60px;
+            color: var(--text-muted);
+            font-size: 14px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        
+        /* Demo Section */
+        .demo-section {
+            padding: var(--space-section) 0;
+            background: var(--bg-surface);
+            position: relative;
+        }
+        
+        .demo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+        }
+        
+        .demo-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .demo-container h2 {
+            font-size: clamp(28px, 4vw, 48px);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        
+        .demo-container p {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-bottom: 48px;
+        }
+        
+        .demo-widget {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 48px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .demo-chat {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .chat-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+        
+        .message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 80%;
+            animation: slideUp 0.3s var(--ease-standard);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .message.user {
+            background: var(--accent-primary);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .message.bot {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            align-self: flex-start;
+        }
+        
+        .chat-input-container {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            padding: 14px 16px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: border-color 200ms;
+        }
+        
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+        
+        .chat-send {
+            padding: 14px 24px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 200ms var(--ease-standard);
+        }
+        
+        .chat-send:hover {
+            background: var(--accent-primary-hover);
+        }
+        
+        /* Value Props */
+        .value-props {
+            padding: var(--space-section) 0;
+            background: var(--bg-primary);
+        }
+        
+        .props-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        
+        .prop-card {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            transition: all 300ms var(--ease-standard);
+        }
+        
+        .prop-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .prop-card:nth-child(1) { background: linear-gradient(135deg, var(--bg-surface-2), var(--color-bg-1)); }
+        .prop-card:nth-child(2) { background: linear-gradient(135deg, var(--bg-surface-2), var(--color-bg-2)); }
+        .prop-card:nth-child(3) { background: linear-gradient(135deg, var(--bg-surface-2), var(--color-bg-3)); }
+        
+        .prop-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .prop-card h3 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .prop-card p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+        
+        /* How It Works */
+        .how-it-works {
+            padding: var(--space-section) 0;
+            background: var(--bg-surface);
+            text-align: center;
+        }
+        
+        .how-it-works h2 {
+            font-size: clamp(28px, 4vw, 48px);
+            margin-bottom: 60px;
+            font-weight: 700;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            position: relative;
+        }
+        
+        .step-number {
+            font-size: 72px;
+            font-weight: 800;
+            color: var(--accent-primary);
+            opacity: 0.3;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+        
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .step p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: var(--space-section) 0;
+            background: var(--bg-primary);
+            text-align: center;
+        }
+        
+        .pricing h2 {
+            font-size: clamp(28px, 4vw, 48px);
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+        
+        .pricing-subtitle {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin-bottom: 48px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: left;
+            transition: all 300ms var(--ease-standard);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .pricing-card.featured {
+            border-top: 3px solid var(--accent-primary);
+            position: relative;
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background: var(--accent-primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .pricing-card h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .price {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-primary);
+            margin: 16px 0;
+        }
+        
+        .price span {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 24px 0;
+        }
+        
+        .pricing-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--accent-primary);
+            font-weight: bold;
+        }
+        
+        .setup-note {
+            text-align: center;
+            margin-top: 32px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: var(--space-section) 0;
+            background: var(--bg-surface);
+        }
+        
+        .faq h2 {
+            font-size: clamp(28px, 4vw, 48px);
+            margin-bottom: 48px;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: var(--bg-surface-2);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 20px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 200ms;
+        }
+        
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .faq-toggle {
+            font-size: 24px;
+            transition: transform 300ms var(--ease-standard);
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 300ms var(--ease-standard);
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+        
+        .faq-answer-content {
+            padding: 0 24px 20px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+        
+        /* Final CTA */
+        .final-cta {
+            padding: calc(var(--space-section) * 1.5) 0;
+            background: linear-gradient(135deg, var(--accent-primary), #7c3aed);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .final-cta-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .final-cta h2 {
+            font-size: clamp(32px, 5vw, 56px);
+            margin-bottom: 24px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .final-cta p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .final-cta .btn-primary {
+            background: white;
+            color: var(--accent-primary);
+        }
+        
+        .final-cta .btn-primary:hover {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--bg-surface-2);
+            border-top: 1px solid var(--border-subtle);
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        footer p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 200ms;
+        }
+        
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --space-section: 60px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .demo-widget {
+                padding: 24px;
+            }
+            
+            .props-grid, .steps, .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">🦅</div>
+                <span>VinRaven</span>
+            </a>
+            <a href="#pricing" class="cta-header">Book Demo →</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    Answer Every Customer Question.<br>
+                    <span class="highlight">Instantly. 24/7.</span>
+                </h1>
+                <p>
+                    AI chatbot trained on YOUR business knowledge. Live in 5 minutes.
+                </p>
+                <div class="hero-ctas">
+                    <a href="#demo" class="btn-primary">Try Demo Now →</a>
+                    <a href="#pricing" class="btn-secondary">See Pricing</a>
+                </div>
+                <div class="scroll-hint">↓ See it in action</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <div class="demo-container">
+                <h2>See VinRaven in Action</h2>
+                <p>Ask anything. Watch it respond instantly from your knowledge base.</p>
+                
+                <div class="demo-widget">
+                    <div class="demo-chat">
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="message bot">
+                                Hi! I'm VinRaven. Ask me anything about our business hours, services, or pricing. I'm trained on your business knowledge!
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input 
+                                type="text" 
+                                class="chat-input" 
+                                id="chatInput" 
+                                placeholder="Try: 'What are your hours?' or 'Do you offer delivery?'"
+                            >
+                            <button class="chat-send" id="chatSend">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value Props -->
+    <section class="value-props">
+        <div class="container">
+            <h2 style="text-align: center; font-size: clamp(28px, 4vw, 48px); margin-bottom: 16px;">Why VinRaven?</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 18px; max-width: 700px; margin: 0 auto;">Stop missing customers. Start converting 24/7.</p>
+            
+            <div class="props-grid">
+                <div class="prop-card">
+                    <div class="prop-icon">⚡</div>
+                    <h3>Setup in Minutes</h3>
+                    <p>No coding required. Upload your docs, train the AI, embed on your site. Done.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon">🧠</div>
+                    <h3>Answers 24/7</h3>
+                    <p>Trained on YOUR knowledge base. Instant, accurate responses while you sleep.</p>
+                </div>
+                <div class="prop-card">
+                    <div class="prop-icon">📧</div>
+                    <h3>Captures Leads</h3>
+                    <p>Can't answer? Creates support ticket with customer email. Never miss an opportunity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <h3>Upload</h3>
+                    <p>Add your FAQs, docs, and business info</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <h3>Train</h3>
+                    <p>AI learns your business instantly</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <h3>Embed</h3>
+                    <p>Copy one line of code to your site</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">04</div>
+                    <h3>Go Live</h3>
+                    <p>Start answering customers 24/7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2>Simple, Transparent Pricing</h2>
+            <p class="pricing-subtitle">No hidden fees. Cancel anytime.</p>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">$149<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>1,000 messages/month</li>
+                        <li>Basic RAG knowledge base</li>
+                        <li>Email support tickets</li>
+                        <li>Widget customization</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="#" class="btn-secondary" style="width: 100%; text-align: center;">Start Free Trial</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Professional</h3>
+                    <div class="price">$249<span>/mo</span></div>
+                    <ul class="pricing-features">
+                        <li>Unlimited messages</li>
+                        <li>Advanced RAG with fine-tuning</li>
+                        <li>Priority support tickets</li>
+                        <li>Custom branding</li>
+                        <li>Analytics dashboard</li>
+                        <li>Priority support</li>
+                    </ul>
+                    <a href="#" class="btn-primary" style="width: 100%; text-align: center;">Book Demo</a>
+                </div>
+            </div>
+            
+            <p class="setup-note">+ $500-$1,500 one-time setup fee (includes custom training & integration)</p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How long does setup take?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Most businesses are live in under 5 minutes. Upload your knowledge base (FAQs, docs, menu, etc.), we train the AI instantly, and you embed one line of code on your site. That's it.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What happens if it can't answer a question?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            VinRaven automatically creates a support ticket and captures the customer's email. You'll get notified instantly so you can follow up personally. No lead gets lost.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do I need technical skills?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Not at all. If you can copy and paste, you can install VinRaven. We provide step-by-step setup videos, and our team handles the initial training for you during onboarding.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I customize how it looks?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Yes! Match your brand colors, upload your logo, customize the greeting message, and position the widget anywhere on your site. Professional plan includes full white-label options.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What kind of businesses use VinRaven?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Restaurants (hours, menu, reservations), medical clinics (appointments, insurance), retail stores (inventory, shipping), salons (booking, services), and any local business that gets repetitive customer questions.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I cancel anytime?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Absolutely. No contracts, no lock-in. Cancel anytime from your dashboard with one click. You keep access until the end of your billing period.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <div class="container">
+            <div class="final-cta-content">
+                <h2>Ready to Automate Your Support?</h2>
+                <p>Join local businesses already answering customers 24/7</p>
+                <div class="hero-ctas">
+                    <a href="#" class="btn-primary">Get Started Free</a>
+                    <a href="#" class="btn-secondary" style="background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: white;">Book 15min Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+                <a href="#">Documentation</a>
+            </div>
+            <p>&copy; 2026 VinRaven. All rights reserved. Built for local businesses in Newfoundland.</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all items
+                faqItems.forEach(i => i.classList.remove('active'));
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Demo Chat
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+
+        const demoResponses = {
+            'hours': 'We're open Monday-Friday 9am-5pm, Saturday 10am-4pm, and closed Sundays. Holiday hours may vary.',
+            'delivery': 'Yes! We offer free delivery within Corner Brook for orders over $50. Delivery takes 1-2 business days.',
+            'price': 'Our prices vary by service. A basic consultation starts at $50, while comprehensive packages range from $200-$500. Would you like specific pricing for a service?',
+            'location': 'We're located at 123 Main Street, Corner Brook, NL. Free parking available in the lot behind our building.',
+            'contact': 'You can reach us at (709) 555-0123 or email support@business.com. We typically respond within 2 hours during business hours.',
+            'default': 'Great question! VinRaven would pull the answer from your uploaded knowledge base. For this demo, try asking about "hours", "delivery", "price", "location", or "contact".'
+        };
+
+        function addMessage(text, isUser) {
+            const message = document.createElement('div');
+            message.className = `message ${isUser ? 'user' : 'bot'}`;
+            message.textContent = text;
+            chatMessages.appendChild(message);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getBotResponse(userMessage) {
+            const lower = userMessage.toLowerCase();
+            for (const [key, response] of Object.entries(demoResponses)) {
+                if (lower.includes(key)) {
+                    return response;
+                }
+            }
+            return demoResponses.default;
+        }
+
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            addMessage(message, true);
+            chatInput.value = '';
+
+            setTimeout(() => {
+                const response = getBotResponse(message);
+                addMessage(response, false);
+            }, 500);
+        }
+
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
