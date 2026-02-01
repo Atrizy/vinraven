@@ -1,5 +1,6 @@
-import { redirect } from 'next/navigation'
-import { getSession } from '@/lib/supabase'
+// app/dashboard/layout.tsx
+// import { redirect } from 'next/navigation'
+// import { getSession } from '@/lib/supabase'
 import Sidebar from '@/components/Sidebar'
 
 export default async function DashboardLayout({
@@ -7,18 +8,18 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getSession()
+  // const session = await getSession()
 
-  if (!session) {
-    redirect('/login')
-  }
+  // if (!session) {
+  //   redirect('/login')
+  // }
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar />
-      <main className="flex-1 overflow-y-auto p-8">
-        {children}
-      </main>
+    <Sidebar />
+    <main className="flex-1 overflow-y-auto p-8">
+    {children}
+    </main>
     </div>
   )
 }
