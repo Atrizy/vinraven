@@ -24,19 +24,18 @@ export default function LoginPage() {
 
       if (authError) throw authError
 
-      // Check if user is master_admin
-      const { data: userData, error: userError } = await supabase
+        const { data: userData, error: userError } = await supabase
         .from('users')
         .select('role')
         .eq('email', email)
         .single()
 
-      if (userError || userData?.role !== 'master_admin') {
-        await supabase.auth.signOut()
-        throw new Error('Access denied. Master admin only.')
-      }
+        if (userError || userData?.role !== 'master_admin') {
+          await supabase.auth.signOut()
+          throw new Error('Access denied. Master admin only.')
+        }
 
-      router.push('/dashboard')
+        router.push('/dashboard')
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -45,59 +44,61 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <div>
-          <h2 className="text-center text-3xl font-bold text-gray-900">
-            VinRaven Master Admin
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Sign in to manage all clients
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
-            </div>
-          )}
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-              />
-            </div>
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-          >
-            {loading ? 'Signing in...' : 'Sign in'}
-          </button>
-        </form>
+    <div className="min-h-screen flex items-center justify-center bg-bg px-4">
+    <div className="w-full max-w-sm">
+    <div className="mb-6">
+    <h1 className="text-xl font-semibold tracking-tight">VinRaven Admin</h1>
+    <p className="text-sm text-text-muted mt-1">
+    Sign in to manage your clients.
+    </p>
+    </div>
+
+    <div className="rounded-lg border border-border bg-surface px-5 py-6">
+    <form onSubmit={handleLogin} className="space-y-4">
+    {error && (
+      <div className="text-xs text-red-400 bg-red-500/10 border border-red-500/30 px-3 py-2 rounded">
+      {error}
       </div>
+    )}
+
+    <div className="space-y-1">
+    <label htmlFor="email" className="text-xs font-medium text-text-muted">
+    Email
+    </label>
+    <input
+    id="email"
+    type="email"
+    required
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    className="w-full rounded-md border border-border bg-elevated px-3 py-2 text-sm text-text outline-none focus:border-accent focus:ring-0"
+    />
+    </div>
+
+    <div className="space-y-1">
+    <label htmlFor="password" className="text-xs font-medium text-text-muted">
+    Password
+    </label>
+    <input
+    id="password"
+    type="password"
+    required
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    className="w-full rounded-md border border-border bg-elevated px-3 py-2 text-sm text-text outline-none focus:border-accent focus:ring-0"
+    />
+    </div>
+
+    <button
+    type="submit"
+    disabled={loading}
+    className="w-full rounded-md bg-accent px-3 py-2 text-sm font-medium text-text hover:bg-accent-soft disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+    >
+    {loading ? 'Signing in…' : 'Sign in'}
+    </button>
+    </form>
+    </div>
+    </div>
     </div>
   )
 }
